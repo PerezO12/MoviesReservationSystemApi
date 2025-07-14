@@ -1,0 +1,42 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# ASP.NET Core secrets
+secrets.json
+appsettings.Development.json
+appsettings.Local.json
+
+# Logs
+*.log
+logs/
+
+# Publish results
+publish/
+
+# wwwroot uploads (si se usan para pruebas locales)
+wwwroot/uploads/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResults/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Others
+.env
+node_modules/ 
