@@ -18,12 +18,12 @@ namespace Movie_Reservation_System.Controllers
         /// <summary>
         /// Sube un archivo de póster y retorna la URL pública.
         /// </summary>
-        /// <param name="file">Archivo de imagen (form-data)</param>
+        /// <param name="dto">Archivo de imagen (form-data)</param>
         /// <returns>URL pública del póster</returns>
         [HttpPost("upload-poster")]
-        public async Task<IActionResult> UploadPoster([FromForm] IFormFile file)
+        public async Task<IActionResult> UploadPoster([FromForm] DTOs.Movie.UploadPosterDto dto)
         {
-            var result = await _movieService.SavePosterAsync(file);
+            var result = await _movieService.SavePosterAsync(dto.File);
             if (result.Success)
                 return StatusCode((int)result.StatusCode, new { url = result.Data, message = result.Message });
             else

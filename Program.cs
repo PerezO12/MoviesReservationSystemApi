@@ -15,6 +15,11 @@ using Movie_Reservation_System.Validators.Room;
 using Movie_Reservation_System.Validators.Seat;
 using Movie_Reservation_System.Validators.Showtime;
 using Movie_Reservation_System.Validators.Reservation;
+using Movie_Reservation_System.Data;
+using Movie_Reservation_System.Models;
+using Movie_Reservation_System.Helpers;
+using Microsoft.OpenApi.Models;
+
 using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,17 +29,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie Reservation System", Version = "v1" });
+    c.OperationFilter<FileUploadOperationFilter>();
+});
 
 // Configurar DbContext con PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configurar Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+// Configurar Identity con ApplicationUser
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+// Registrar los validadores de FluentValidation
+builder.Services.AddValidatorsFromAssemblyContaining<MovieCreateDtoValidator>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
